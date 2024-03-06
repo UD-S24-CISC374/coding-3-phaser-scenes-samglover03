@@ -10,6 +10,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     create() {
+        this.add.image(650, 350, "dune").setScale(1.5, 1.5);
         new PhaserLogo(this, this.cameras.main.width / 2, 0);
         this.fpsText = new FpsText(this);
 
