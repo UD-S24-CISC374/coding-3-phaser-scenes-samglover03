@@ -66,5 +66,9 @@ export default class MainScene extends Phaser.Scene {
             this.player?.setVelocityX(0);
             this.player?.anims.play("turn");
         }
+
+        if(this.player && this.player.x > 1200){
+            this.scene.switch('WormScene');
+        }
     }
 }
