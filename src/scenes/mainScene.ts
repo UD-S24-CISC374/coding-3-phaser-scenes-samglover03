@@ -36,14 +36,14 @@ export default class MainScene extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: "right", 
+            key: "right",
             frames: this.anims.generateFrameNumbers("character", {
-                start: 4, 
+                start: 4,
                 end: 7,
             }),
             frameRate: 10,
             repeat: -1,
-        })
+        });
 
         const message = `Phaser v${Phaser.VERSION}`;
         this.add
@@ -58,8 +58,7 @@ export default class MainScene extends Phaser.Scene {
         if (this.cursors?.left.isDown) {
             this.player?.setVelocityX(-160);
             this.player?.anims.play("left", true);
-        }
-        else if (this.cursors?.right.isDown) {
+        } else if (this.cursors?.right.isDown) {
             this.player?.setVelocityX(160);
             this.player?.anims.play("right", true);
         } else {
@@ -67,8 +66,8 @@ export default class MainScene extends Phaser.Scene {
             this.player?.anims.play("turn");
         }
 
-        if(this.player && this.player.x > 1200){
-            this.scene.switch('WormScene');
+        if (this.player && this.player.x > 1200) {
+            this.scene.switch("WormScene");
         }
     }
 }

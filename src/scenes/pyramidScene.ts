@@ -1,15 +1,15 @@
 import Phaser from "phaser";
 
-export default class WormScene extends Phaser.Scene {
+export default class PyramidScene extends Phaser.Scene {
     private player?: Phaser.Physics.Arcade.Sprite;
     private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
 
     constructor() {
-        super({ key: "WormScene" });
+        super({ key: "PyramidScene" });
     }
 
     create() {
-        this.add.image(600, 300, "worm").setScale(1.5, 1.5);
+        this.add.image(650, 400, "pyramid").setScale(0.6, 0.6);
 
         this.cursors = this.input.keyboard?.createCursorKeys();
 
@@ -64,10 +64,6 @@ export default class WormScene extends Phaser.Scene {
         } else {
             this.player?.setVelocityX(0);
             this.player?.anims.play("turn");
-        }
-
-        if (this.player && this.player.x > 1200) {
-            this.scene.switch("PyramidScene");
         }
     }
 }
