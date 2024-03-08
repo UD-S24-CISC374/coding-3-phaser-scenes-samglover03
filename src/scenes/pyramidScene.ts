@@ -1,8 +1,17 @@
 import Phaser from "phaser";
+import { CONFIG } from "../config";
+
+export type Collidable =
+    | Phaser.Types.Physics.Arcade.GameObjectWithBody
+    | Phaser.Tilemaps.Tile;
 
 export default class PyramidScene extends Phaser.Scene {
     private player?: Phaser.Physics.Arcade.Sprite;
     private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+
+    private spice?: Phaser.Physics.Arcade.Group;
+
+    private scoreText?: Phaser.GameObjects.Text;
 
     constructor() {
         super({ key: "PyramidScene" });
@@ -10,6 +19,9 @@ export default class PyramidScene extends Phaser.Scene {
 
     create() {
         this.add.image(650, 400, "pyramid").setScale(0.6, 0.6);
+
+        const floor = this.physics.add.staticImage(650, 725, "floorTexture");
+        floor.setScale(100, 0).refreshBody();
 
         this.cursors = this.input.keyboard?.createCursorKeys();
 
@@ -52,6 +64,57 @@ export default class PyramidScene extends Phaser.Scene {
                 fontSize: "24px",
             })
             .setOrigin(1, 0);
+
+        this.scoreText = this.add.text(
+            16,
+            16,
+            `Spice Collected: ${CONFIG.score}`,
+            {
+                fontSize: "32px",
+                color: "#000",
+            }
+        );
+
+        this.spice = this.physics.add.group({
+            key: "spice",
+            repeat: 4,
+            setXY: { x: 50, y: 0, stepX: 300 },
+            setScale: { x: 0.04, y: 0.04 },
+        });
+
+        this.spice.children.iterate((c) => {
+            const child = c as Phaser.Physics.Arcade.Image;
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            return true;
+        });
+
+        this.physics.world.setBoundsCollision(true, true, true, true);
+        this.physics.add.collider(this.spice, floor);
+
+        this.physics.add.overlap(
+            this.player,
+            this.spice,
+            this.handleCollectSpice,
+            undefined,
+            this
+        );
+    }
+
+    private handleCollectSpice(player: Collidable, s: Collidable) {
+        const spice = s as Phaser.Physics.Arcade.Image;
+        spice.disableBody(true, true);
+
+        CONFIG.score += 10;
+        //this.score += 10;
+        this.scoreText?.setText(`Spice Collected: ${CONFIG.score}`);
+
+        if (this.spice?.countActive(true) === 0) {
+            this.spice.children.iterate((c) => {
+                const child = c as Phaser.Physics.Arcade.Image;
+                child.enableBody(true, child.x, 0, true, true);
+                return true;
+            });
+        }
     }
 
     update() {
