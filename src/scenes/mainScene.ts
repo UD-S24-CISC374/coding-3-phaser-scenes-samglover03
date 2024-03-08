@@ -3,6 +3,7 @@ import Phaser from "phaser";
 export default class MainScene extends Phaser.Scene {
     private player?: Phaser.Physics.Arcade.Sprite;
     private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+    private spice?: Phaser.Physics.Arcade.Group;
 
     constructor() {
         super({ key: "MainScene" });
@@ -10,6 +11,9 @@ export default class MainScene extends Phaser.Scene {
 
     create() {
         this.add.image(650, 350, "dune").setScale(1.5, 1.5);
+
+        const floor = this.physics.add.staticImage(650, 725, "floorTexture");
+        floor.setScale(100, 0).refreshBody();
 
         this.cursors = this.input.keyboard?.createCursorKeys();
 
@@ -52,6 +56,22 @@ export default class MainScene extends Phaser.Scene {
                 fontSize: "24px",
             })
             .setOrigin(1, 0);
+
+        this.spice = this.physics.add.group({
+            key: "spice",
+            repeat: 4,
+            setXY: { x: 50, y: 0, stepX: 300 },
+            setScale: { x: 0.04, y: 0.04 },
+        });
+
+        this.spice.children.iterate((c) => {
+            const child = c as Phaser.Physics.Arcade.Image;
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            return true;
+        });
+
+        this.physics.world.setBoundsCollision(true, true, true, true);
+        this.physics.add.collider(this.spice, floor);
     }
 
     update() {
