@@ -129,9 +129,15 @@ export default class FinalScene extends Phaser.Scene {
         }
 
         if (this.player && this.player.x > 1200) {
-            this.add.text(475, 300, "GAME OVER", {
+            this.add.text(475, 200, "GAME OVER", {
                 fontSize: "70px",
                 color: "#000",
+                align: "center",
+            });
+            this.add.text(350, 300, "The Fremen thank you!", {
+                fontSize: "50px",
+                color: "#000",
+                align: "center",
             });
         }
     }

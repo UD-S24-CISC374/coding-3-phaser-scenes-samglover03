@@ -20,7 +20,7 @@ export default class MainScene extends Phaser.Scene {
         this.add.image(650, 350, "dune").setScale(1.5, 1.5);
 
         this.add.text(
-            475,
+            400,
             75,
             "Help collect spice on Arrakis\nKeep moving forward!\n(u can tell i just watched dune pt 2)",
             {
