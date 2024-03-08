@@ -1,9 +1,16 @@
 import Phaser from "phaser";
 
+export type Collidable =
+    | Phaser.Types.Physics.Arcade.GameObjectWithBody
+    | Phaser.Tilemaps.Tile;
+    
 export default class MainScene extends Phaser.Scene {
     private player?: Phaser.Physics.Arcade.Sprite;
     private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
     private spice?: Phaser.Physics.Arcade.Group;
+
+    private score = 0;
+    private scoreText?: Phaser.GameObjects.Text;
 
     constructor() {
         super({ key: "MainScene" });
@@ -57,6 +64,11 @@ export default class MainScene extends Phaser.Scene {
             })
             .setOrigin(1, 0);
 
+        this.scoreText = this.add.text(16, 16, "score: 0", {
+            fontSize: "32px",
+            color: "#000",
+        });
+
         this.spice = this.physics.add.group({
             key: "spice",
             repeat: 4,
@@ -72,6 +84,30 @@ export default class MainScene extends Phaser.Scene {
 
         this.physics.world.setBoundsCollision(true, true, true, true);
         this.physics.add.collider(this.spice, floor);
+
+        this.physics.add.overlap(
+            this.player,
+            this.spice,
+            this.handleCollectSpice,
+            undefined,
+            this
+        );
+    }
+
+    private handleCollectSpice(player: Collidable, s: Collidable) {
+        const spice = s as Phaser.Physics.Arcade.Image;
+        spice.disableBody(true, true);
+
+        this.score += 10;
+        this.scoreText?.setText(`Score: ${this.score}`);
+
+        if (this.spice?.countActive(true) === 0) {
+            this.spice.children.iterate((c) => {
+                const child = c as Phaser.Physics.Arcade.Image;
+                child.enableBody(true, child.x, 0, true, true);
+                return true;
+            });
+        }
     }
 
     update() {
