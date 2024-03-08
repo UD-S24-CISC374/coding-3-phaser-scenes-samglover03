@@ -127,5 +127,12 @@ export default class FinalScene extends Phaser.Scene {
             this.player?.setVelocityX(0);
             this.player?.anims.play("turn");
         }
+
+        if (this.player && this.player.x > 1200) {
+            this.add.text(475, 300, "GAME OVER", {
+                fontSize: "70px",
+                color: "#000",
+            });
+        }
     }
 }
