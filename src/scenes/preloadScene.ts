@@ -9,6 +9,7 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("dune", "assets/dune.jpg");
         this.load.image("worm", "assets/worm.jpeg");
         this.load.image("pyramid", "assets/pyramid.webp");
+        this.load.image("final", "assets/hill.jpeg");
         this.load.spritesheet("character", "assets/character.png", {
             frameWidth: 383.5,
             frameHeight: 500,
