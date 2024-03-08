@@ -1,15 +1,15 @@
 import Phaser from "phaser";
+import { CONFIG } from "../config";
 
 export type Collidable =
     | Phaser.Types.Physics.Arcade.GameObjectWithBody
     | Phaser.Tilemaps.Tile;
-    
+
 export default class MainScene extends Phaser.Scene {
     private player?: Phaser.Physics.Arcade.Sprite;
     private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
     private spice?: Phaser.Physics.Arcade.Group;
 
-    private score = 0;
     private scoreText?: Phaser.GameObjects.Text;
 
     constructor() {
@@ -64,7 +64,7 @@ export default class MainScene extends Phaser.Scene {
             })
             .setOrigin(1, 0);
 
-        this.scoreText = this.add.text(16, 16, "score: 0", {
+        this.scoreText = this.add.text(16, 16, "Spice Collected: 0", {
             fontSize: "32px",
             color: "#000",
         });
@@ -98,8 +98,8 @@ export default class MainScene extends Phaser.Scene {
         const spice = s as Phaser.Physics.Arcade.Image;
         spice.disableBody(true, true);
 
-        this.score += 10;
-        this.scoreText?.setText(`Score: ${this.score}`);
+        CONFIG.score += 10;
+        this.scoreText?.setText(`Spice Collected: ${CONFIG.score}`);
 
         if (this.spice?.countActive(true) === 0) {
             this.spice.children.iterate((c) => {

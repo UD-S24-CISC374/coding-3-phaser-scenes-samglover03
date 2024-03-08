@@ -38,4 +38,5 @@ export const CONFIG = {
         pixelArt: false,
         antialias: true,
     },
+    score: 0,
 };
