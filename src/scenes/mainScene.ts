@@ -19,6 +19,17 @@ export default class MainScene extends Phaser.Scene {
     create() {
         this.add.image(650, 350, "dune").setScale(1.5, 1.5);
 
+        this.add.text(
+            475,
+            75,
+            "Help collect spice on Arrakis\nKeep moving forward!\n(u can tell i just watched dune pt 2)",
+            {
+                fontSize: "25px",
+                color: "#000",
+                align: "center",
+            }
+        );
+
         const floor = this.physics.add.staticImage(650, 725, "floorTexture");
         floor.setScale(100, 0).refreshBody();
 
