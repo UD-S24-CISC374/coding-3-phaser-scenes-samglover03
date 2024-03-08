@@ -100,7 +100,6 @@ export default class WormScene extends Phaser.Scene {
         spice.disableBody(true, true);
 
         CONFIG.score += 10;
-        //this.score += 10;
         this.scoreText?.setText(`Spice Collected: ${CONFIG.score}`);
 
         if (this.spice?.countActive(true) === 0) {
